@@ -26,7 +26,7 @@ class Vector:
         """
         return Vector(self.x + other.x, self.y + other.y, self.z + other.z)
                 
-    def __sub__(self, other)
+    def __sub__(self, other):
         """
         overwrites subtraction operator for subtraction of two instances
         """
