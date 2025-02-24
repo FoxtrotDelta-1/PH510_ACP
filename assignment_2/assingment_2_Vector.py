@@ -94,37 +94,37 @@ def triangle_internal_angle(a_input, b_input, c_input):
                     (Vector.mag(bc_vector)*Vector.mag(ac_vector))) * 180/np.pi
     return f' Angle 1 = {abc:.3f}\n Angle 2 = {bca:.3f}\n Angle 3 = {cab:.3f}'
 
-print("start of cartesian checks")
+print("start of cartesian checks\n")
 
 a = Vector(7, 5, 3)
 
-print(a)
+print("vector a = ", a,"\n")
 
 b = Vector(10, 2, 10)
 
-print(b)
+print("vector b = ", b,"\n")
 
 c = Vector.mag(a)
 
-print(c)
+print("the magnitude of a is", c,"\n")
 
 d = a + b
 
-print(d)
+print("the sum of a and b is", d,"\n")
 
 e = a - b
 
-print(e)
+print("the difference of a and b is", e,"\n")
 
 f = Vector.dot(a, b)
 
-print(f)
+print("dot product of vector a and b =", f,"\n")
 
 h = Vector.cross(a, b)
 
-print(h)
+print("cross product of vector a and b =", h,"\n")
 
-print("start of cartesian checks")
+print("end of cartesian checks\n")
 
 class SphericalPolarVector(Vector):
     """
