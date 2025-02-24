@@ -94,6 +94,7 @@ def triangle_internal_angle(a_input, b_input, c_input):
                     (Vector.mag(bc_vector)*Vector.mag(ac_vector))) * 180/np.pi
     return f' Angle 1 = {abc:.3f}\n Angle 2 = {bca:.3f}\n Angle 3 = {cab:.3f}'
 
+print("start of cartesian checks")
 
 a = Vector(7, 5, 3)
 
@@ -123,6 +124,7 @@ h = Vector.cross(a, b)
 
 print(h)
 
+print("start of cartesian checks")
 
 class SphericalPolarVector(Vector):
     """
