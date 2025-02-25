@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
+
 """
 Created on Tue Feb 11 12:10:36 2025
 
 @author: Finnghuala
 
-Creation and use of class objects for cartesian and spherical vectors for the completion of assignment two of PH510:ACP
+Creation and use of class objects for cartesian and spherical vectors
+for the completion of assignment two of PH510:ACP
 
 """
 
