@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
+"""
+Created on Tue Feb 11 12:10:36 2025
 
+@author: Finnghuala
+
+Creation and use of class objects for cartesian and spherical vectors for the completion of assignment two of PH510:ACP
+
+"""
 
 import numpy as np
 
@@ -19,7 +26,7 @@ class Vector:
         """
         prints floating point to 3 decimal places
         """
-        return f"Cartesian Vector:({self.x_store:.3f}, {self.y_store:.3f}, {self.z_store:.3f})"
+        return f"Vector:({self.x_store:.3f}, {self.y_store:.3f}, {self.z_store:.3f})"
 
     def mag(self):
         """
@@ -29,7 +36,7 @@ class Vector:
 
     def __add__(self, other):
         """
-        overwrites addition operator for addition of two instances
+        overloads addition operator for addition of two instances
         """
         # if isinstance(self, SphericalPolarVector) and isinstance(other, SphericalPolarVector):
         #     return SphericalPolarVector(self.x_store + other.x_store,
@@ -42,7 +49,7 @@ class Vector:
 
     def __sub__(self, other):
         """
-        overwrites subtraction operator for subtraction of two instances
+        overloads subtraction operator for subtraction of two instances
         """
         return Vector(self.x_store - other.x_store,
                       self.y_store - other.y_store,
@@ -73,7 +80,7 @@ def triangle_area(vertex_1, vertex_2, vertex_3,):
     side_1 = vertex_2 - vertex_1
     side_2 = vertex_3 - vertex_1
 
-    return (1/2)*Vector.mag(Vector.cross(side_1, side_2))
+    return f"{((1/2)*Vector.mag(Vector.cross(side_1, side_2))):.3f}"
 
 def triangle_internal_angle(a_input, b_input, c_input):
     """
@@ -92,15 +99,15 @@ def triangle_internal_angle(a_input, b_input, c_input):
 
     cab = np.arccos(Vector.dot(bc_vector,ac_vector)/
                     (Vector.mag(bc_vector)*Vector.mag(ac_vector))) * 180/np.pi
-    return f' Angle 1 = {abc:.3f}\n Angle 2 = {bca:.3f}\n Angle 3 = {cab:.3f}'
+    return f'Angle 1 = {abc:.3f}\n Angle 2 = {bca:.3f}\n Angle 3 = {cab:.3f}'
 
 print("start of cartesian checks\n")
 
-a = Vector(7, 5, 3)
+a = Vector(1, 1, 1)
 
 print("vector a = ", a,"\n")
 
-b = Vector(10, 2, 10)
+b = Vector(2, 2, 2)
 
 print("vector b = ", b,"\n")
 
@@ -177,37 +184,132 @@ class SphericalPolarVector(Vector):
         return f"Vector:({self.radial():.3f},{self.theta():.3f}\u03B8,{self.phi():.3f}\u03C6)"
 
     def __add__(self, other):
+        """
+        overloads the add funciton for the spherical vector.
+        
+        inputs are two spherical vectors
+        
+        addition is performed for x, y, and z and then stored in an intermediate value
+        
+        this intermeidate value is a cartesian out put that is then restored
+        in to a spherical vector construct.
+        """
 
         x_intermediate = self.x_store + other.x_store
         y_intermediate = self.y_store + other.y_store
         z_intermediate = self.z_store + other.z_store
 
-        self.x_store = np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2)
+        radial = np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2)
 
-        if np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2) == 0:
-            self.y_store = 0
-        else: self.y_store = (np.arccos(z_intermediate/
-        np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2)))*180/np.pi
+        if radial == 0:
+            theta = 0
+        else: theta = (np.arccos(z_intermediate/radial))*180/np.pi
 
-        if np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2) == 0:
-            self.z_store = 0
-        else: self.z_store = ((((np.arctan2(y_intermediate, x_intermediate))*180/np.pi)+360)%360)
+        if radial == 0:
+            phi = 0
+        else: phi = ((((np.arctan2(y_intermediate, x_intermediate))*180/np.pi)+360)%360)
 
-        return SphericalPolarVector(self.x_store, self.y_store, self.z_store)
+        return SphericalPolarVector(radial, theta, phi)
+
+    def __sub__(self, other):
+        """
+        overloads the add funciton for the spherical vector.
+        
+        inputs are two spherical vectors
+        
+        subtraction is performed for x, y, and z and then stored in an intermediate value
+        
+        this intermeidate value is a cartesian out put that is then restored
+        in to a spherical vector construct.
+        """
+
+        x_intermediate = self.x_store - other.x_store
+        y_intermediate = self.y_store - other.y_store
+        z_intermediate = self.z_store - other.z_store
+
+        radial = np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2)
+
+        if radial == 0:
+            theta = 0
+        else: theta = (np.arccos(z_intermediate/radial))*180/np.pi
+
+        if radial == 0:
+            phi = 0
+        else: phi = ((((np.arctan2(y_intermediate, x_intermediate))*180/np.pi)+360)%360)
+
+        return SphericalPolarVector(radial, theta, phi)
+
+    def cross(self, other):
+        """
+        returns the cross product of two spherical vectors
+        
+        inputs are two spherical vectors
+        
+        cross is performed for x, y, and z and then stored in an intermediate value
+        
+        this intermeidate value is a cartesian out put that is then restored
+        in to a spherical vector construct.
+        
+        """
+        x_intermediate = self.y_store * other.z_store - self.z_store * other.y_store
+        y_intermediate = self.z_store * other.x_store - self.x_store * other.z_store
+        z_intermediate = self.x_store * other.y_store - self.y_store * other.x_store
+
+        radial = np.sqrt(x_intermediate**2 + y_intermediate**2 + z_intermediate**2)
+
+        if radial == 0:
+            theta = 0
+        else: theta = (np.arccos(z_intermediate/radial))*180/np.pi
+
+        if radial == 0:
+            phi = 0
+        else: phi = ((((np.arctan2(y_intermediate, x_intermediate))*180/np.pi)+360)%360)
+
+        return SphericalPolarVector(radial, theta, phi)
+
 
 
 
 # shouldnt need to rewrite my funcitons defeats the purpose of a big bit of the inheratince
 
+print("\nStart of spherical checks\n")
+Sp_1 = SphericalPolarVector(1, 0, 0)
 
-Sp_1 = SphericalPolarVector(1, 135, 0)
+Sp_2 = SphericalPolarVector(1, 45, 0)
 
-Sp_2 = SphericalPolarVector(1, 90, 0)
+Sp_3 = SphericalPolarVector(1, 90, 0)
 
-i = Sp_1 + Sp_2
+Sp_4 = SphericalPolarVector(1, 90, 45)
 
-print("i is the", i)
+print("Sp_1 is the Spherical", Sp_1,
+      "\nSp_2 is the Spherical", Sp_2,
+      "\nSp_3 is the Spherical", Sp_3,
+      "\nSp_4 is the Spherical", Sp_4)
 
+i = SphericalPolarVector.mag(Sp_1)
+
+j = Sp_1 + Sp_2
+
+k = Sp_3 - Sp_1
+
+l = SphericalPolarVector.cross(Sp_1, Sp_3)
+
+m = SphericalPolarVector.dot(Sp_2, Sp_3)
+
+print("\ni is the magnitude of Sp_1 =", i)
+
+print("\nj = Sp_1+Sp_2, j is the", j)
+
+print("\nk = Sp_3-Sp_2, k is the", k)
+
+print("\nl is the cross product of Sp_1 and Sp_3, l is the", l)
+
+print("\nm is the dot product of Sp_2 and Sp_3, m is ", f'{m:.3}')
+
+print("\nEnd of spherical checks\n")
+
+
+print("\nStart of cartesian triangles\n\n3.a)\n")
 
 A = Vector(0, 0, 0)
 B = Vector(1, 0, 0)
@@ -223,7 +325,7 @@ F = Vector(-1, 0, -1)
 
 DEF_Area = triangle_area(D, E, F)
 
-print("area of triangle 2, DEF = ", DEF_Area)
+print("\narea of triangle 2, DEF = ", DEF_Area)
 
 
 G = Vector(1, 0, 0)
@@ -232,7 +334,7 @@ I = Vector(0, 0, 0)
 
 GHI_Area = triangle_area(G, H, I)
 
-print("area of triangle 2, GHI = ", GHI_Area)
+print("\narea of triangle 2, GHI = ", GHI_Area)
 
 J = Vector(0, 0, 0)
 K = Vector(1, -1, 0)
@@ -240,21 +342,79 @@ L = Vector(0, 0, 1)
 
 JKL_Area = triangle_area(J, K, L)
 
-print("area of triangle 4, JKL = ", JKL_Area)
+print("\narea of triangle 4, JKL = ", JKL_Area)
 
+print("\n3.b)")
 
 ABC_Angle = triangle_internal_angle(A, B, C)
 
-print("For triangle 1, ABC:", ABC_Angle)
+print("\nFor triangle 1, ABC:\n", ABC_Angle)
 
 DEF_Angle = triangle_internal_angle(D, E, F)
 
-print("For triangle 2, DEF:", DEF_Angle)
+print("\nFor triangle 2, DEF:\n", DEF_Angle)
 
 GHI_Angle = triangle_internal_angle(G, H, I)
 
-print("For triangle 3, GHI", GHI_Angle)
+print("\nFor triangle 3, GHI:\n", GHI_Angle)
 
 JKL_Angle = triangle_internal_angle(J, K, L)
 
-print("For triangle 4, JKL", JKL_Angle)
+print("\nFor triangle 4, JKL:\n", JKL_Angle)
+
+print("\nEnd of cartesian triangles\n\n\nStart of spherical triangles")
+
+
+
+M = SphericalPolarVector(0, 0, 0)
+N = SphericalPolarVector(1, 0, 0)
+O = SphericalPolarVector(1, 90, 0)
+
+MNO_Area = triangle_area(M, N, O)
+
+MNO_Angle = triangle_internal_angle(M, N, O)
+
+print("\nFor triangle 5, MNO,\n Area = ", MNO_Area,"\n", MNO_Angle)
+
+
+P = SphericalPolarVector(1, 0, 0)
+Q = SphericalPolarVector(1, 90, 0)
+R = SphericalPolarVector(1, 90, 180)
+
+PQR_Area = triangle_area(P, Q, R)
+
+PQR_Angle = triangle_internal_angle(P, Q, R)
+
+print("\nFor triangle 6, PQR,\n Area = ", PQR_Area,"\n", PQR_Angle)
+
+
+S = SphericalPolarVector(0, 0, 0)
+T = SphericalPolarVector(2, 0, 0)
+U = SphericalPolarVector(2, 90, 0)
+
+STU_Area = triangle_area(S, T, U)
+
+STU_Angle = triangle_internal_angle(S, T, U)
+
+print("\nFor triangle 7, STU,\n Area = ", STU_Area,"\n", STU_Angle)
+
+
+V = SphericalPolarVector(1, 90, 0)
+W = SphericalPolarVector(1, 90, 180)
+X = SphericalPolarVector(1, 90, 270)
+
+VWX_Area = triangle_area(V, W, X)
+
+VWX_Angle = triangle_internal_angle(V, W, X)
+
+print("\nFor triangle 8, VWX,\n Area = ", VWX_Area,"\n", VWX_Angle)
+
+check1 = Vector(1/2, 0, 0)
+check2 = Vector(0, np.sqrt(3)/2, 0)
+check3 = Vector(0, 0, 0)
+
+check_Area = triangle_area(check1, check2, check3)
+
+check_Angle = triangle_internal_angle(check1, check2, check3)
+
+print("\nFor check triangle\n Area = ", check_Area,"\n", check_Angle)
