@@ -68,23 +68,6 @@ class MonteCarlo:
     upon initiation
     """
 
-    # def __init__(self, n_dimensions, n_samples):
-
-    #     self.n_dimensions = n_dimensions
-    #     self.n_samples = n_samples
-    #     self.points_array = np.zeros((n_samples,n_dimensions))
-    #     # self.function = function
-
-    #     i = 0
-    #     j = 0
-
-    #     while i < self.n_samples:
-    #         j=0
-    #         while j < self.n_dimensions:
-    #             self.points_array[i,j] = np.random.uniform(-1,1,1)
-    #             j+=1
-    #         i+=1
-
     def __init__(self, function, lower_bound, upper_bound,n_dimensions, n_samples):
         self.lower_bound = lower_bound
         self.upper_bound = upper_bound
@@ -106,7 +89,6 @@ class MonteCarlo:
         """
         Calculates the integral of a given function  between limits 'a' and 'b'.  
         """
-
         integral = ((self.upper_bound - self.lower_bound)**self.n_dimensions) * self.average()[0]
         return integral
 
@@ -114,7 +96,6 @@ class MonteCarlo:
         """
         Calculates the variance (error) of a given function.
         """
-
         variance = 1/self.n_samples * (self.average()[1] - self.average()[0]**2)
         return variance
 
@@ -158,10 +139,6 @@ def n_sphere(n_dimensions, n_samples):
 # print(MonteCarlo.calculations(MonteCarlo(n_sphere(2,1_000_000), -1, 1, 2, 1_000_000)))
 
 
-
-
-
-
 def NormalDistribution(n_dimensions, n_samples):
     """
     """
@@ -180,17 +157,6 @@ def NormalDistribution(n_dimensions, n_samples):
         for j in range(n_dimensions):
             t_points_array[i,j] = np.random.uniform(-1,1,1)
 
-
-    # for i in range(n_samples):
-    #     for j in range(n_dimensions):
-    #         magnitude = magnitude + (t_points_array[i,j])**2
-    #     t_magnitude[i] = np.sqrt(magnitude)
-    #     magnitude = 0
-
-
-    # transformation to x from t, x = t/(1-t**2 ) is not necessary
-    # lol no is necessary
-    
     sigma = 1
     mean = 0
 
@@ -200,19 +166,16 @@ def NormalDistribution(n_dimensions, n_samples):
     Norm_3 = np.product(((1+t_points_array**2)/(1-t_points_array**2)**2), axis=1) # t distribution thingy
     output = np.exp(Norm_1)*Norm_2*Norm_3
     
-    return output, Norm_1, Norm_2, Norm_3, t_points_array
+    return output # , Norm_1, Norm_2, Norm_3, t_points_array ## renable for testing
 
-trial_2 = NormalDistribution(6,10_000_000)
-
-trial_2_output = trial_2[0]
-trial_2_Norm_1 = trial_2[1]
-trial_2_Norm_2 = trial_2[2]
-trial_2_Norm_3 = trial_2[3]
-
-shenan = trial_2[4]
-
-trial_2_monte = MonteCarlo(trial_2[0], -1, 1, 6, 10_000_000)
-
-print(trial_2_monte.calculations())
+### test chunk
+# trial_2 = NormalDistribution(6,10_000_000)
+# trial_2_output = trial_2[0]
+# trial_2_Norm_1 = trial_2[1]
+# trial_2_Norm_2 = trial_2[2]
+# trial_2_Norm_3 = trial_2[3]
+# trial_2_monte = MonteCarlo(trial_2[0], -1, 1, 6, 10_000_000)
+# print(trial_2_monte.calculations())
+### end of test checks
 
 print(MonteCarlo.calculations(MonteCarlo(NormalDistribution(6,1_000_000)[0], -1, 1, 6, 1_000_000)))
