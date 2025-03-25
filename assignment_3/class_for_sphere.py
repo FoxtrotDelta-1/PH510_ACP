@@ -160,6 +160,8 @@ def n_sphere(n_dimensions, n_samples):
 
 
 
+
+
 def NormalDistribution(n_dimensions, n_samples):
     """
     """
@@ -169,6 +171,7 @@ def NormalDistribution(n_dimensions, n_samples):
     output = np.zeros(n_samples)
     Norm_1 = np.zeros(n_samples)
     Norm_2 = np.zeros(n_samples)
+    Norm_3 = np.zeros(n_samples)
     
     t_points_array = np.zeros((n_samples,n_dimensions))
     t_magnitude = np.zeros((n_samples))
@@ -192,29 +195,24 @@ def NormalDistribution(n_dimensions, n_samples):
     mean = 0
 
 
-    Norm_1 = np.exp(np.sum(((t_points_array/(1-t_points_array**2)-mean)**2)/(2*(sigma**2)),axis=1))
-    Norm_2 = 1/(sigma*np.sqrt(2*np.pi))
-    Norm_3 = Norm_1*Norm_2
-    output = Norm_3
-    for i in range(n_samples):
-        for j in range(n_dimensions):
-            output[i] = output[i]*((1+t_points_array[i][j]**2)/(1-t_points_array[i][j]**2)**2)
+    Norm_1 = -((np.sum(((t_points_array/(1-t_points_array**2)-mean)**2),axis=1))/(2*sigma**2)) # exponetial
+    Norm_2 = 1/(sigma*np.sqrt(2*np.pi)) # normalisation
+    Norm_3 = np.product(((1+t_points_array**2)/(1-t_points_array**2)**2), axis=1) # t distribution thingy
+    output = np.exp(Norm_1)*Norm_2*Norm_3
     
-    # plt.figure(0)
-    # plt.plot(t_points_array[0]/(1-t_points_array[0]**2), output/((1+t_points_array[0]**2)/(1-t_points_array[0]**2)**2), 'og')
-    # plt.xlim(-10,10)
-    
-    return output, Norm_1,Norm_2, Norm_3
+    return output, Norm_1, Norm_2, Norm_3, t_points_array
 
-trial_2 = NormalDistribution(2,1_000)
+trial_2 = NormalDistribution(6,10_000_000)
 
-trial_2_Norm_1 = trial_2[0]
-trial_2_Norm_2 = trial_2[1]
-trial_2_Norm_3 = trial_2[2]
-trial_2_output = trial_2[3]
+trial_2_output = trial_2[0]
+trial_2_Norm_1 = trial_2[1]
+trial_2_Norm_2 = trial_2[2]
+trial_2_Norm_3 = trial_2[3]
 
+shenan = trial_2[4]
 
-trial_2_monte = MonteCarlo(trial_2[0], -1, 1, 2, 1_000)
+trial_2_monte = MonteCarlo(trial_2[0], -1, 1, 6, 10_000_000)
 
 print(trial_2_monte.calculations())
 
+print(MonteCarlo.calculations(MonteCarlo(NormalDistribution(6,1_000_000)[0], -1, 1, 6, 1_000_000)))
