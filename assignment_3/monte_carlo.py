@@ -2,15 +2,15 @@
 """
 Created on Mon Mar 31 15:55:23 2025
 
-@author: Finnghuala
+@author: FinnghualaD
 """
 
 import numpy as np
-# from mpi4py import MPI
+from mpi4py import MPI
 
-#comm = MPI.COMM_WORLD
-#no_of_ranks = comm.Get_size()
-#rank = comm.Get_rank()
+comm = MPI.COMM_WORLD
+no_of_ranks = comm.Get_size()
+rank = comm.Get_rank()
 
 
 class MonteCarlo:
@@ -68,26 +68,26 @@ class MonteCarlo:
         f"units^{self.n_dimensions}")
         print()
 
-#    def parallelisation(self):
-#        """
-#        fill out
-#        """
-#        val_mean = comm.reduce(self.average()[0], op=MPI.SUM, root=0)
-#        val_square_mean = comm.reduce(self.average()[1], op=MPI.SUM, root=0)
-#
-#        if rank==0:
-#            integral_term = (self.upper_bound - self.lower_bound)**self.n_dimensions
-#            integral = (val_mean)*integral_term/no_of_ranks
-#
-#            variance_1 = 1/no_of_ranks * val_square_mean
-#            variance_2 = (1/no_of_ranks * val_mean)**2
-#
-#            variance = 1/self.n_dimensions * (variance_1 - variance_2)
-#            uncertainty = np.sqrt(variance) * integral_term
-#            print(f"Average = {self.average()[0]}, Integral = {integral},",
-#            f"Variance = {variance}")
-#            print(f"Therefore, the integral is {integral:.4f} ± {uncertainty:.4f}",
-#            f"units^{self.n_dimensions}")
-#            print()
-#            return integral, uncertainty
-#        return None
+    def parallelisation(self):
+        """
+        fill out
+        """
+        val_mean = comm.reduce(self.average()[0], op=MPI.SUM, root=0)
+        val_square_mean = comm.reduce(self.average()[1], op=MPI.SUM, root=0)
+
+        if rank==0:
+            integral_term = (self.upper_bound - self.lower_bound)**self.n_dimensions
+            integral = (val_mean)*integral_term/no_of_ranks
+
+            variance_1 = 1/no_of_ranks * val_square_mean
+            variance_2 = (1/no_of_ranks * val_mean)**2
+
+            variance = 1/self.n_dimensions * (variance_1 - variance_2)
+            uncertainty = np.sqrt(variance) * integral_term
+            print(f"Average = {self.average()[0]}, Integral = {integral},",
+            f"Variance = {variance}")
+            print(f"Therefore, the integral is {integral:.4f} ± {uncertainty:.4f}",
+            f"units^{self.n_dimensions}")
+            print()
+            return integral, uncertainty
+        return None
