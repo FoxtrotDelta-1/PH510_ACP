@@ -12,22 +12,24 @@ from monte_carlo import MonteCarlo
 from n_sphere import n_sphere
 from normal_distribution import normal_distribution
 
-trial_1 = n_sphere(2, 1000)[0]
+print("For 2D n_sphere:")
+n_sphere_2D_MONTE = MonteCarlo(n_sphere(2, 100_000), -1, 1, 2, 100_000)
+n_sphere_2D_RESULT = n_sphere_2D_MONTE.calculations()
 
-trial_1_monte = MonteCarlo(n_sphere(2,1_000_000)[0], -1, 1, 2, 1_000_000)
+print("For 3D n_sphere:")
+n_sphere_3D_MONTE = MonteCarlo(n_sphere(3, 100_000), -1, 1, 3, 100_000)
+n_sphere_3D_RESULT = n_sphere_3D_MONTE.calculations()
 
-print(trial_1_monte.calculations())
+print("For 4D n_sphere:")
+n_sphere_4D_MONTE = MonteCarlo(n_sphere(4, 100_000), -1, 1, 4, 100_000)
+n_sphere_4D_RESULT = n_sphere_4D_MONTE.calculations()
 
-print(MonteCarlo.calculations(MonteCarlo(n_sphere(2,1_000_000)[0], -1, 1, 2, 1_000_000)))
+print("For 5D n_sphere:")
+n_sphere_5D_MONTE = MonteCarlo(n_sphere(5, 100_000), -1, 1, 5, 100_000)
+n_sphere_5D_RESULT = n_sphere_5D_MONTE.calculations()
 
-trial_2 = normal_distribution(1, 1000000, 1, 0)
+print("For 1D normal distribution:")
+MonteCarlo.calculations(MonteCarlo(normal_distribution(1,100_000, 1, 0), -1, 1, 1, 100_000))
 
-
-trial_2_output = trial_2[0]
-
-
-trial_2_monte = MonteCarlo(trial_2, -1, 1, 1, 1000000)
-
-print(trial_2_monte.calculations())
-
-print(MonteCarlo.calculations(MonteCarlo(normal_distribution(1,1000000, 1, 0), -1, 1, 1, 1000000)))
+print("For 6D normal distribution:")
+MonteCarlo.calculations(MonteCarlo(normal_distribution(6,100_000, 1, 0), -1, 1, 6, 100_000))

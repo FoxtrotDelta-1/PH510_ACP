@@ -28,4 +28,4 @@ def n_sphere(n_dimensions, n_samples):
             included[i] = 1
         magnitude = 0
 
-    return included, points_array
+    return included
