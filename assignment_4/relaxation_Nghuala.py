@@ -9,9 +9,9 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-N = 25
+class Relaxaton:
 
-
+    def 
 # Phi
 Phi = np.random.random([N,N])
 # boundary conditions
@@ -19,13 +19,6 @@ Phi[0, :] = 1
 Phi[N-1, :] = 1
 Phi[:, 0] = 0
 Phi[:, N-1] = 0
-
-# Phi[1, :] = 1
-# Phi[N-2, :] = 1
-# Phi[:, 1] = 0
-# Phi[:, N-2] = 0
-
-
 
 # PhiPrime
 PhiPrime = np.zeros([N,N])
@@ -35,24 +28,15 @@ PhiPrime[N-1, :] = 1
 PhiPrime[:, 0] = 0
 PhiPrime[:, N-1] = 0
 
-# PhiPrime[1, :] = 1
-# PhiPrime[N-2, :] =1
-# PhiPrime[:, 1] = 0
-# PhiPrime[:, N-2] = 0
-
-
 # change tracking array
 change = 1
-
 
 # f(x,y)
 charge = np.zeros([N,N])
 
-
 # spacing
 l = 10e-2 # meters
 h = l/(N-2)
-
 
 # iteration tracker
 iteration_N = 0
